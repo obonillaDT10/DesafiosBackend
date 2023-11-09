@@ -1,10 +1,3 @@
-//Realizar una clase ProductManager
-//Debe crearse como un array vacio
-//cada producto tiene que tener: titulo, descripcion,precio,thumbnail,code,stock
-//debe contar con metodo addProduct. Al agregarlo, debe crearse con un id automincrementable
-//debe contar con un metodo getProdcuts el cual debe devolver el array con todos los productos creados hasta el momento
-//debe contar con un getProdcutById el cual debe buscar en el array el producto que coincida con el id. 
-//En caso de no coincidir ningun id mostrar por consola un error "not found"
 
 class ProductManager {
     constructor() {
@@ -36,9 +29,20 @@ class ProductManager {
   
     getProductById(id) {
       const product = this.products.find((producto) => producto.id === id);
-      return product; // Devolver el producto encontrado o undefined si no se encuentra
+      return product; 
+    }
+
+    deleteProduct(id) {
+      const productIndex = this.products.findIndex((producto) => producto.id === id);
+      if (productIndex !== -1) {
+        this.products.splice(productIndex, 1);
+        console.log(`Producto con ID ${id} eliminado exitosamente.`);
+      } else {
+        console.log(`No se encontró ningún producto con ID ${id}.`);
+      }
     }
   }
+
   
 
   const productManager = new ProductManager();
@@ -60,17 +64,32 @@ class ProductManager {
     code: 'AB101',
     stock: 50,
   });
-  
-  const products = productManager.getProducts();
-  console.log('Lista de productos:', products);
 
-  const productId = 1; 
+  productManager.addProduct({
+    titulo: 'Omar',
+    descripcion: 'xxxxx',
+    precio: 50.000,
+    thumbnail: 'imagen2.jpg',
+    code: 'AB101',
+    stock: 50,
+  });
+  
+  console.log("ESTE ES UN GET ALL PRODUCTS")
+  const products = productManager.getProducts();
+  console.log('Lista de productos:', products, "\n");
+
+  console.log("ESTE ES UN GET BY ID")
+  const productId = 3; 
   const product = productManager.getProductById(productId);
   if (product) {
     console.log('Producto encontrado:', product);
   } else {
     console.log('Producto no encontrado');
   }
+
+  console.log("ESTE ES UN DELETE PRODUCT");
+  const productIdToDelete = 2; 
+  productManager.deleteProduct(productIdToDelete);
 
 
 
