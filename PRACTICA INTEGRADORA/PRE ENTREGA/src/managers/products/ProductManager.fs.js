@@ -1,6 +1,4 @@
 const fs = require('fs/promises');
-const path = require("path");//importo el modulo de fileSystemPath para pasar de una manera más facil la ruta donde voy a almacenar mis productos.
-const filePath = path.join(__dirname, "products.json");
 
 class ProductManager {
   constructor(filePath) {

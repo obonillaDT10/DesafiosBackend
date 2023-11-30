@@ -1,9 +1,14 @@
 const {Router} = require("express")
+const ProductManager = require('../../managers/products/ProductManager.fs');
+const path = require("path");//importo el modulo de fileSystemPath para pasar de una manera más facil la ruta donde voy a almacenar mis productos.
+const filePath = path.join(__dirname, "..", "..", "data", "products.json");//!persistencia en file
 
+const productManager = new ProductManager(filePath);
 
 
 const router = Router()
 
+//get all products
 router.get("/", async (req, res) => {
     try {
         const products = await productManager.getProducts()
@@ -12,7 +17,7 @@ router.get("/", async (req, res) => {
         res.send({ status: 200, products });
     } catch (err) {
         res.status(500).send({
-            message: "Error ocurrer",
+            message: "Error ocurrer", err
         })
     }
 })
