@@ -1,7 +1,21 @@
-const {Router} = require("express")
+const { Router } = require("express");
+const CartsManager = require('../../managers/carts/CartManager.fs');
 
 
-const router = Router()
+const cartManager = new CartsManager('data/carts.json');
+
+const router = Router();
+
+// GET /api/carts
+router.get("/", async (req, res) => {
+    try {
+        const carts = await cartManager.getCarts();
+        res.status(200).json({ status: 200, carts });
+    } catch (error) {
+        console.error("Error en la ruta GET /api/carts:", error);
+        res.status(500).json({ status: 500, message: 'Error en la solicitud GET /api/carts' });
+    }
+});
 
 
 //POST
@@ -64,3 +78,5 @@ router.post("/:cid/product/:pid", async (req, res) => {
         res.status(500).send({ status: 500, message: "An error has occurred while adding the product to the cart" });
     }
 });
+
+module.exports = router;
