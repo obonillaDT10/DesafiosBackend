@@ -1,26 +1,15 @@
-const { Router } = require("express");
-const CartsManager = require('../../managers/carts/CartManager.fs');
+const {Router} = require("express")
+const cartManager = require("../../dao/managers/carts/CartManager.db")
+const cartModel = require('../../dao/models/CartModel');
 
+//const path = require("path");//importo el modulo de fileSystemPath para pasar de una manera más facil la ruta donde voy a almacenar mis productos.
+//const filePath = path.join(__dirname, "..", "..", "data", "carts.json");
 
-const cartManager = new CartsManager('data/carts.json');
+//const cartsManager = new CartsManager(filePath)
+const router = Router()
 
-const router = Router();
-
-// GET /api/carts
-router.get("/", async (req, res) => {
-    try {
-        const carts = await cartManager.getCarts();
-        res.status(200).json({ status: 200, carts });
-    } catch (error) {
-        console.error("Error en la ruta GET /api/carts:", error);
-        res.status(500).json({ status: 500, message: 'Error en la solicitud GET /api/carts' });
-    }
-});
-
-
-//POST
 router.post("/", async (req, res) => {
-   
+    //const {body} = req
     try{
         const cart = await cartManager.addCart()
 
@@ -36,7 +25,6 @@ router.post("/", async (req, res) => {
     }
 )
 
-//GET cid
 router.get("/:cid", async (req, res) => {
     const id = req.params.cid
 
@@ -54,8 +42,6 @@ router.get("/:cid", async (req, res) => {
     }
 })
 
-
-//POST cid
 router.post("/:cid/product/:pid", async (req, res) => {
     try {
         const cartId = req.params.cid;
@@ -79,4 +65,5 @@ router.post("/:cid/product/:pid", async (req, res) => {
     }
 });
 
-module.exports = router;
+
+module.exports = router

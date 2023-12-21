@@ -1,14 +1,12 @@
 const {Router} = require("express")
-const ProductManager = require('../../managers/products/ProductManager.fs');
-const path = require("path");//importo el modulo de fileSystemPath para pasar de una manera más facil la ruta donde voy a almacenar mis productos.
-const filePath = path.join(__dirname, "..", "..", "data", "products.json");//!persistencia en file
-
-const productManager = new ProductManager(filePath);
+const productManager = require ('../../dao/managers/products/ProductManager.db')
+//const path = require("path");//importo el modulo de fileSystemPath para pasar de una manera más facil la ruta donde voy a almacenar mis productos.
+//const filePath = path.join(__dirname, "..", "..", "data", "products.json");//!persistencia en file
 
 
+//const productManager = new ProductManager(filePath); //!INSTANCIA PARA PERSISTENCIA EN FILE
 const router = Router()
 
-//get all products
 router.get("/", async (req, res) => {
     try {
         const products = await productManager.getProducts()
@@ -17,16 +15,15 @@ router.get("/", async (req, res) => {
         res.send({ status: 200, products });
     } catch (err) {
         res.status(500).send({
-            message: "Error ocurrer", err
+            message: "Error ocurrer",
         })
     }
 })
 
-
 router.get("/:pid", async (req, res) => {
     const id = req.params.pid;
     try {
-        const product = await productManager.getProductById(id)
+        const product = await productManager.getById(id)
 
         if (product) {
             res.status(200).json({ status: 200, product });
@@ -38,7 +35,6 @@ router.get("/:pid", async (req, res) => {
         res.status(500).json({ status:500, message: 'Error retrieving the product' });
     }
 });
-
 
 
 router.post("/", async (req, res) => {
@@ -60,6 +56,7 @@ router.post("/", async (req, res) => {
   });
   
   
+
 router.put('/:pid', async (req, res) => {
     const { body } = req;
     const id = req.params.pid;
@@ -99,4 +96,5 @@ router.delete("/:pid", async (req, res) => {
 });
 
 
-module.exports = router
+  module.exports = router
+  
