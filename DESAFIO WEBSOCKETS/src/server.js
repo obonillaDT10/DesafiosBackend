@@ -1,35 +1,8 @@
 (async () => {
 
 const express = require("express")
-import handlebars from "express-handlebars";
-import __dirname from "./utils.js";
 const app = express()
 const appRouter = require('./routes/app.routes');
-
-//Configuración del engine
-app.engine(
-    "hbs",
-    handlebars.engine({
-        extname: "hbs",
-        //Plantilla principal
-        defaultlayout: "main",
-    })
-);
-
-//Setear motor 
-app.set("view engine", "hbs")
-app.set("views", `${__dirname}/views`);
-
-//Public
-app.use(express.static(`${__dirname}/public`));
-
-//Routes
-app.get('/', (req, res) => {
-    res.render("index", {
-        title: "Titulo nuevo",
-        nombre: "Ivanna",
-    });
-})
 
 try{
 
